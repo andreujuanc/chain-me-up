@@ -16,6 +16,30 @@ const Home: NextPage = () => {
         tag="surferclaire"
         description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
       />
+      <Card
+        isVerified
+        name="Surfer Claire"
+        tag="surferclaire"
+        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+      />
+      <Card
+        isVerified
+        name="Surfer Claire"
+        tag="surferclaire"
+        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+      />
+      <Card
+        isVerified
+        name="Surfer Claire"
+        tag="surferclaire"
+        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+      />
+      <Card
+        isVerified
+        name="Surfer Claire"
+        tag="surferclaire"
+        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+      />
     </>
   );
 };
