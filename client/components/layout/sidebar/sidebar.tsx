@@ -4,8 +4,7 @@ import { TabButton } from './tab-button';
 
 export function Sidebar(): ReactElement {
   return (
-    <nav className="">
-      <h1>Chain Me Up</h1>
+    <nav className="order-first px-4 py-2 sm:w-64">
       <ul className="flex flex-col list-none">
         <TabButton icon="home">Home</TabButton>
         <TabButton icon="notification">Notifications</TabButton>
