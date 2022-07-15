@@ -1,8 +1,14 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
+import { Sidebar } from '../components/layout/sidebar';
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />
+  return (
+    <>
+      <Sidebar />
+      <Component {...pageProps} />
+    </>
+  );
 }
 
 export default MyApp
