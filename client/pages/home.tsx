@@ -1,8 +1,8 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Card } from '../components/card';
+import { getLayout, NextPageWithLayout } from '../components/layout';
 
-const Home: NextPage = () => {
+const Home: NextPageWithLayout = () => {
   return (
     <>
       <Head>
@@ -43,5 +43,7 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+Home.getLayout = getLayout;
 
 export default Home;
