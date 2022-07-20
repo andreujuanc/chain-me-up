@@ -7,6 +7,7 @@ import { alchemyProvider } from 'wagmi/providers/alchemy';
 import { publicProvider } from 'wagmi/providers/public';
 
 import { AppPropsWithLayout } from '../components/layout';
+import { Toaster } from 'react-hot-toast';
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai],
@@ -33,6 +34,7 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
+        <Toaster position="top-right" reverseOrder={false} />
         {getLayout(<Component {...pageProps} />)}
       </RainbowKitProvider>
     </WagmiConfig>
