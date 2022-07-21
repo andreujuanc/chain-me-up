@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useBundlr } from '../../bundlr.context';
+import { UploadImage } from '../upload-image';
 
 export function WalletManagement() {
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
@@ -11,19 +12,20 @@ export function WalletManagement() {
   const router = useRouter();
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && bundlrInstance === undefined) {
       // router.push('/home');
       initialiseBundlr();
     }
-  }, [isConnected]);
+  }, [isConnected, bundlrInstance]);
 
-  if (isConnected && bundlrInstance) {
+  if (isConnected) {
     return (
       <>
         <p className="mb-4 text-center"></p>Your current balance is:{' '}
         {balance || 0} $BNDLR
         <div className="flex items-center justify-center">
           <button onClick={() => fundWallet(+value)}>💸 Add Fund</button>
+          <UploadImage />
         </div>
       </>
     );
