@@ -9,17 +9,29 @@ describe("ChainMeUp", function () {
   async function deployMain() {
     const [owner, otherAccount] = await ethers.getSigners();
 
-    const ChainMeUp = await ethers.getContractFactory("ChainMeUp");
-    const chainMeUp = await ChainMeUp.deploy();
+    const ChainMeUpDeployer = await ethers.getContractFactory("ChainMeUpProfiles");
+    const chainMeUpDeployer = await ChainMeUpDeployer.deploy();
 
-    return { chainMeUp, owner, otherAccount };
+    return { deployer: chainMeUpDeployer, owner, otherAccount };
   }
 
   describe("Deployment", function () {
     it("Should deploy", async function () {
-      const { chainMeUp } = await loadFixture(deployMain);
+      const { deployer, otherAccount } = await loadFixture(deployMain);
+      
+      await deployer.createProfile()
+      const deployedAddress = await deployer.getProfile()
 
-      expect(chainMeUp.address).to.be.properAddress;
+      expect(deployedAddress).to.be.properAddress;
+      expect(deployedAddress).to.not.be.equal(ethers.constants.AddressZero);
+
+      await deployer.createProfile()
+      const secondTime = await deployer.getProfile()
+      expect(secondTime).to.be.equal(deployedAddress)
+
+      await deployer.connect(otherAccount).createProfile()
+      const otherAccountProfile = await deployer.connect(otherAccount).getProfile()
+      expect(otherAccountProfile).to.be.not.equal(deployedAddress)
     });
   });
 });

@@ -18,7 +18,7 @@ function SimpleButton({ children, onClick }: { children: React.ReactNode; onClic
 export function WalletManagement() {
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
   const { initialiseLit } = useLit();
-  const { isConnected } = useAccount();
+  const { isConnected, address } = useAccount();
   const [value, setValue] = useState('0.05');
   const router = useRouter();
 
