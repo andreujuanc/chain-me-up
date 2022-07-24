@@ -49,7 +49,10 @@ export function UploadImage(): ReactElement {
           onChange={onFileChange}
           className="hidden"
         />
-        {image && (
+       
+
+      </button>
+      {image && (
           <div>
             <button
               className="px-8 py-2 text-black bg-gray-200 rounded hover:bg-gray-100"
@@ -59,6 +62,7 @@ export function UploadImage(): ReactElement {
             </button>
           </div>
         )}
+      <p>
         {URI && (
           <p className="mt-4">
             <span className="text-xl">Uploaded File:</span>{' '}
@@ -67,7 +71,7 @@ export function UploadImage(): ReactElement {
             </a>
           </p>
         )}
-      </button>
+      </p>
     </div>
   );
 }

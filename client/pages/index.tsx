@@ -1,6 +1,8 @@
 import { NextPage } from 'next';
 import dynamic from 'next/dynamic';
 import NextHead from 'next/head';
+import { useRouter } from 'next/router';
+import { SimpleButton } from '../components/SimpleButton';
 
 const WalletManagement = dynamic(
   async () => {
@@ -14,6 +16,7 @@ const WalletManagement = dynamic(
 );
 
 const Login: NextPage = () => {
+  const router = useRouter();
   return (
     <main className="fixed flex flex-col items-center justify-center w-full h-full bg-gradient-to-br from-primary-600 to-primary-50">
       <NextHead>
@@ -26,6 +29,10 @@ const Login: NextPage = () => {
           }
         </div>
         <WalletManagement />
+        <br />
+        <SimpleButton onClick={() => router.push('./home')} >
+          Go to Look & Feel demo
+        </SimpleButton>
       </section>
     </main>
   );

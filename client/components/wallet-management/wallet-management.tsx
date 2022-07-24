@@ -7,23 +7,7 @@ import { useBundlr } from '../../bundlr.context';
 import { useLit } from '../../lit.context';
 import { formatAmount } from '../../utils';
 import { UploadImage } from '../upload-image';
-
-function SimpleButton({
-  children,
-  onClick,
-}: {
-  children: React.ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className="w-full h-10 rounded-lg bg-primary-600 text-gray-50 hover:bg-primary-500 hover:bg-opacity-60 hover:text-primary-600"
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  );
-}
+import { SimpleButton } from '../SimpleButton';
 
 export function WalletManagement() {
   const { connect, connectors, error, pendingConnector } = useConnect()
