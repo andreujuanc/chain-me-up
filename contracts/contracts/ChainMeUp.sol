@@ -24,6 +24,7 @@ contract ChainMeUp is ERC1155, Ownable, Pausable, ERC1155Supply {
         public
         payable
     {
+        require(msg.value > 0, "You must to pay for your subscription.");
         _mint(msg.sender, 0, 1, data);
     }
 

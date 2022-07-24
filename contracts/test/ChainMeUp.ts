@@ -43,7 +43,9 @@ describe("ChainMeUp", function () {
       const userAProfile = await ethers.getContractAt("ChainMeUp", userA_tokenAddress)
 
 
-      await userAProfile.connect(userB).mint([])
+      await userAProfile.connect(userB).mint([], {
+        value: "1000",
+      })
       expect(await userAProfile.balanceOf(userB.address, 0)).to.be.equal(1)
 
     })
