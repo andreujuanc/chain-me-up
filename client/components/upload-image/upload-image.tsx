@@ -62,7 +62,7 @@ export function UploadImage(): ReactElement {
         {URI && (
           <p className="mt-4">
             <span className="text-xl">Uploaded File:</span>{' '}
-            <a href={URI} target="_blank">
+            <a href={URI} target="_blank" rel="noreferrer">
               {URI}
             </a>
           </p>
