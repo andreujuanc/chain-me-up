@@ -6,6 +6,14 @@ import { useBundlr } from '../../bundlr.context';
 import { useLit } from '../../lit.context';
 import { UploadImage } from '../upload-image';
 
+function SimpleButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <button className="w-full h-10 bg-primary-600 text-gray-50 rounded-lg hover:bg-primary-500 hover:bg-opacity-60 hover:text-primary-600"
+      onClick={onClick}>{children}
+    </button>
+  );
+}
+
 export function WalletManagement() {
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
   const { initialiseLit } = useLit();
@@ -13,36 +21,28 @@ export function WalletManagement() {
   const [value, setValue] = useState('0.05');
   const router = useRouter();
 
-  const bundlrFunder= bundlrInstance?.funder
-  const initItAll = useMemo(() => () => {
-    
-    if (isConnected && bundlrFunder === undefined) {
-      // router.push('/home');
-      initialiseBundlr();
-    }
-  }, [isConnected, bundlrInstance, bundlrFunder]);
-  
-  useEffect(()=>{
-    initItAll()
-  }, [])
-  
-  useEffect(() => {
-    if (isConnected) {
-      //initialiseLit();
-    }
-  }, [isConnected]);
+  const bundlrFunder = bundlrInstance?.funder
 
-  if (isConnected) {
+  if (isConnected && bundlrFunder !== undefined) {
     return (
       <>
         <p className="mb-4 text-center"></p>Your current balance is:{' '}
         {balance || 0} $BNDLR
         <div className="flex flex-col items-center justify-center">
-          <button className="w-full bg-primary-600 text-gray-50 rounded-lg hover:bg-primary-500 hover:bg-opacity-60 hover:text-primary-600" onClick={() => fundWallet(+value)}>💸 Add Funds</button>
+          <SimpleButton onClick={() => fundWallet(+value)}>💸 Add Funds</SimpleButton>
           <UploadImage />
         </div>
       </>
     );
+  } else if (isConnected && bundlrFunder === undefined) {
+    return (
+      <>
+        <p className="mb-4 text-center">Please sign the message to login</p>
+        <div>
+          <SimpleButton onClick={() => { initialiseBundlr(); initialiseLit() }}>Login</SimpleButton>
+        </div>
+      </>
+    )
   } else {
     return (
       <>

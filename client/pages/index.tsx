@@ -20,8 +20,10 @@ const Login: NextPage = () => {
         <title>OnlyFrens</title>
       </NextHead>
       <section className="items-center justify-center max-w-sm p-12 bg-white rounded-lg shadow-xl">
-        <div  className="px-6 py-2 bg-primary-50 flex items-center justify-center rounded-lg padding-lg">
-          <img src="/images/logo/logo.svg" alt='Logo'  />
+        <div className="px-6 py-2 mb-6 bg-primary-50 flex items-center justify-center rounded-lg padding-lg">
+          {// eslint-disable-next-line @next/next/no-img-element 
+            <img src="/images/logo/logo.svg" alt='Logo' />
+          }
         </div>
         <WalletManagement />
       </section>
