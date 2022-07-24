@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import toast from 'react-hot-toast';
+import { useLit } from './lit.context';
 
 export interface IBundlrHook {
   initialiseBundlr: () => Promise<void>;
@@ -65,6 +66,7 @@ export function BundlrContextProvider({
 }: IBundlrContextProviderProps): ReactElement {
   const [bundlrInstance, setBundlrInstance] = useState<WebBundlr>();
   const [balance, setBalance] = useState<string>('');
+  const { encryptString } = useLit();
 
   useEffect(() => {
     if (bundlrInstance) {
@@ -145,11 +147,29 @@ export function BundlrContextProvider({
 
   async function uploadFile(file: Buffer) {
     try {
-      let transaction = await bundlrInstance!.uploader.upload(file, [
-        { name: 'Content-Type', value: 'image/png' },
-      ]);
+      if (encryptString) {
+        let { encryptedData, encryptedSymmetricKey, accessControlConditions } =
+          await encryptString(file.toString('base64'));
 
-      return transaction;
+        const packagedData = Buffer.from(
+          JSON.stringify({
+            encryptedData,
+            encryptedSymmetricKey,
+            accessControlConditions,
+          }),
+        );
+
+        let transaction = await bundlrInstance!.uploader.upload(packagedData, [
+          {
+            name: 'Content-Type',
+            value: 'application/json',
+          },
+        ]);
+
+        return transaction;
+      } else {
+        throw new Error('Could not upload - lit is not initialised.');
+      }
     } catch (error) {
       log.error('Something went wrong: ', (error as Error)?.message);
     }

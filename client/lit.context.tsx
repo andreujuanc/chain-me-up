@@ -1,40 +1,120 @@
-import LitSdk, { AuthSignature, LitClient } from 'lit-js-sdk';
+import LitSdk, {
+  IAccessControlCondition,
+  IAuthSignature,
+  ILitClient,
+  TChain,
+} from 'lit-js-sdk';
 import { createContext, ReactNode, useContext, useState } from 'react';
+import toast from 'react-hot-toast';
 
-export interface ILitHook {
-  initialiseLit: () => Promise<void>;
+type TDataURI = string;
+
+interface IEncryptStringResult {
+  encryptedData: TDataURI;
+  encryptedSymmetricKey: string;
+  accessControlConditions: IAccessControlCondition[];
 }
 
-const LitContext = createContext<ILitHook>({
-  initialiseLit: async () => {},
-});
+export interface ILitHook {
+  initialiseLit?: () => Promise<void>;
+  encryptString?: (str: string) => Promise<IEncryptStringResult>;
+}
+
+const LitContext = createContext<ILitHook>({});
 
 interface ILitContextProviderProps {
   children: ReactNode;
 }
 
 export function LitContextProvider({ children }: ILitContextProviderProps) {
-  const [litClient, setLitClient] = useState<LitClient>();
-  const [authSignature, setAuthSignature] = useState<AuthSignature>();
+  const [litClient, setLitClient] = useState<ILitClient>();
+  const [authSignature, setAuthSignature] = useState<IAuthSignature>();
+  const chain: TChain = 'mumbai';
 
   async function initialiseLit() {
-    const client = new LitSdk.LitNodeClient();
-    await client.connect();
-    
-    setLitClient(client);
+    if (!litClient) {
+      const client = new LitSdk.LitNodeClient();
+      await client.connect();
+
+      setLitClient(client);
+    } else {
+      console.log('Lit is already initialised.', litClient);
+    }
+  }
+
+  async function encryptString(str: string): Promise<IEncryptStringResult> {
+    if (litClient === undefined) {
+      toast.error('No lit client found - have you initialised it?');
+      throw new Error('No lit client found - have you initialised it?');
+    }
 
     const retrievedAuthSignature = await LitSdk.checkAndSignAuthMessage({
-      chain: 'mumbai',
+      chain,
     });
 
     setAuthSignature(retrievedAuthSignature);
+
+    if (retrievedAuthSignature === undefined) {
+      toast.error('Could not get an auth signature.');
+      throw new Error('Could not get an auth signature.');
+    }
+
+    console.log('test test test => ', str);
+    const { encryptedString, symmetricKey } = await LitSdk.encryptString(str);
+
+    const accessControlConditions: IAccessControlCondition[] = [
+      {
+        chain: 'mumbai',
+        standardContractType: '', // 'ERC1155',
+        contractAddress: '',
+        method: '',
+        parameters: [':userAddress'],
+        returnValueTest: {
+          comparator: '=',
+          value: '0x8c0Bd37cC7Cf56d969f8Ab92F7c618273733170B',
+        },
+      },
+    ];
+
+    const encryptedSymmetricKey = await litClient.saveEncryptionKey({
+      accessControlConditions,
+      symmetricKey,
+      authSig: retrievedAuthSignature,
+      chain,
+    });
+
+    const encryptedData = await blobToDataURI(new Blob([encryptedString]));
+
+    return {
+      encryptedData,
+      encryptedSymmetricKey,
+      accessControlConditions,
+    };
   }
 
   return (
-    <LitContext.Provider value={{ initialiseLit }}>
+    <LitContext.Provider value={{ initialiseLit, encryptString }}>
       {children}
     </LitContext.Provider>
   );
+}
+
+async function blobToDataURI(blob: Blob): Promise<TDataURI> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+
+    reader.onload = (event: ProgressEvent<FileReader>) => {
+      const data = event?.target?.result;
+
+      if (data) {
+        if (typeof data === 'string') {
+          resolve(data);
+        }
+      }
+    };
+
+    reader.readAsDataURL(blob);
+  });
 }
 
 export function useLit() {
