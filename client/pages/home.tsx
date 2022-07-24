@@ -12,33 +12,38 @@ const Home: NextPageWithLayout = () => {
       </Head>
       <Card
         isVerified
-        name="Surfer Claire"
-        tag="surferclaire"
-        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+        name="Aylin Bülbül"
+        tag="aaylinbulbull"
+        content="person-01"
+        description="Andy took this picture right when I step on something, hahaha that was funny. Or was it? ✈️🌍"
       />
       <Card
         isVerified
-        name="Surfer Claire"
-        tag="surferclaire"
-        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+        name="Dr J.Joy"
+        tag="dr.jjoy"
+        content="person-02"
+        description="It's too cold for me during winter. I'd rather be home."
       />
       <Card
         isVerified
-        name="Surfer Claire"
-        tag="surferclaire"
-        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+        name="Hisu lee"
+        tag="hisulee"
+        content="person-03"
+        description="Soap is like a box of chocolates, you never know what you're going to get."
       />
       <Card
         isVerified
-        name="Surfer Claire"
-        tag="surferclaire"
-        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+        name="Maria Silva"
+        tag="silva"
+        content="person-04"
+        description="Sometimes I forget what I was thinking about... ☀️🏖️🩴"
       />
       <Card
         isVerified
-        name="Surfer Claire"
-        tag="surferclaire"
-        description="New surf top! I love the long sleeve top for surfing as it protects my skin from getting a rash on the board and also provides and SPF protection from the sun ☀️ win win 🥇 if you ask me!"
+        name="Alvin Bueno"
+        tag="bueno.a"
+        content="person-05"
+        description="New hat! Who dis? 👒"
       />
     </>
   );

@@ -8,6 +8,7 @@ interface ICardProps {
   tag: string;
   isVerified: boolean;
   description: string; // TODO: This should be rich text.
+  content: string;
 }
 
 export function Card({
@@ -15,11 +16,12 @@ export function Card({
   tag,
   isVerified,
   description,
+  content,
 }: ICardProps): ReactElement {
   return (
     <article className="py-2 bg-white border-b-2 border-gray-100">
       <div className="flex flex-row px-1 py-2">
-        <Avatar isOnline hasStory />
+        <Avatar content={content} isOnline hasStory />
         <div className="ml-2">
           <p className="inline-flex flex-row items-center text-base font-semibold">
             {name}
@@ -36,7 +38,7 @@ export function Card({
       </div>
       <div className="px-1 text-base">{description}</div>
       <figure className="pt-2 pb-1">
-        <img src="/images/content/example.jpeg" />
+        <img src={`/images/content/${content}.jpg`} />
       </figure>
       <div className="flex flex-row">
         <ActionButton icon="heart" />

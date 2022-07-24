@@ -3,9 +3,10 @@ import { ReactElement } from 'react';
 interface IAvatarProps {
   isOnline: boolean;
   hasStory: boolean;
+  content: string;
 }
 
-export function Avatar({ isOnline, hasStory }: IAvatarProps): ReactElement {
+export function Avatar({ isOnline, hasStory, content }: IAvatarProps): ReactElement {
   return (
     <a
       className="relative block object-cover w-12 h-12 p-0.5 rounded-full select-none bg-gradient-to-br from-primary-500 to-primary-200"
@@ -14,7 +15,7 @@ export function Avatar({ isOnline, hasStory }: IAvatarProps): ReactElement {
       <figure>
         <img
           className="w-full h-full rounded-full"
-          src="/images/avatar/example.jpg"
+          src={`/images/avatar/${content}.jpg`}
         />
         {isOnline && (
           <div className="absolute w-3 h-3 border-2 border-white rounded-full right-px bottom-px bg-emerald-400" />
