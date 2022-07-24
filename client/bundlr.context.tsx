@@ -49,10 +49,10 @@ function generateLoggerByType(type: TLogType): TLogger {
 }
 
 const BundlrContext = createContext<IBundlrHook>({
-  initialiseBundlr: async () => {},
-  fundWallet: (_: number) => {},
+  initialiseBundlr: async () => { },
+  fundWallet: (_: number) => { },
   balance: '',
-  uploadFile: async (_file) => {},
+  uploadFile: async (_file) => { },
   bundlrInstance: undefined,
 });
 
@@ -73,10 +73,12 @@ export function BundlrContextProvider({
   }, [bundlrInstance]);
 
   async function initialiseBundlr() {
+    if (bundlrInstance) return
     const provider = new providers.Web3Provider(
       window.ethereum as providers.ExternalProvider,
     );
     await provider._ready();
+    console.log('_ready')
 
     const bundlr = new WebBundlr(
       /**
@@ -92,7 +94,7 @@ export function BundlrContextProvider({
       },
     );
     await bundlr.ready();
-
+    console.log('ready')
     setBundlrInstance(bundlr);
   }
 
