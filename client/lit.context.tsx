@@ -17,7 +17,7 @@ interface IEncryptStringResult {
 
 export interface ILitHook {
   initialiseLit?: () => Promise<void>;
-  encryptString?: (str: string) => Promise<IEncryptStringResult>;
+  encryptString?: (str: string, profileAddress: string) => Promise<IEncryptStringResult>;
 }
 
 const LitContext = createContext<ILitHook>({});
@@ -42,7 +42,7 @@ export function LitContextProvider({ children }: ILitContextProviderProps) {
     }
   }
 
-  async function encryptString(str: string): Promise<IEncryptStringResult> {
+  async function encryptString(str: string, profileAddress: string): Promise<IEncryptStringResult> {
     if (litClient === undefined) {
       toast.error('No lit client found - have you initialised it?');
       throw new Error('No lit client found - have you initialised it?');
@@ -66,12 +66,12 @@ export function LitContextProvider({ children }: ILitContextProviderProps) {
       {
         chain: 'mumbai',
         standardContractType: '', // 'ERC1155',
-        contractAddress: '',
-        method: '',
-        parameters: [':userAddress'],
+        contractAddress: '0x0b9FD334938B039324ad40DC69B99c73C67bc93C',
+        method: 'hasAccessToProfile',
+        parameters: [':userAddress', profileAddress],
         returnValueTest: {
-          comparator: '=',
-          value: '0x8c0Bd37cC7Cf56d969f8Ab92F7c618273733170B',
+          comparator: '>',
+          value: '0',
         },
       },
     ];

@@ -10,6 +10,7 @@ import {
   useState,
 } from 'react';
 import toast from 'react-hot-toast';
+import { useFrenProfile } from './account.context';
 import { useLit } from './lit.context';
 
 export interface IBundlrHook {
@@ -67,6 +68,7 @@ export function BundlrContextProvider({
   const [bundlrInstance, setBundlrInstance] = useState<WebBundlr>();
   const [balance, setBalance] = useState<string>('');
   const { encryptString } = useLit();
+  const { profile } = useFrenProfile()
 
   useEffect(() => {
     if (bundlrInstance) {
@@ -147,9 +149,9 @@ export function BundlrContextProvider({
 
   async function uploadFile(file: Buffer) {
     try {
-      if (encryptString) {
+      if (encryptString && profile) {
         let { encryptedData, encryptedSymmetricKey, accessControlConditions } =
-          await encryptString(file.toString('base64'));
+          await encryptString(file.toString('base64'), profile);
 
         const packagedData = Buffer.from(
           JSON.stringify({

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "hardhat test"
+    "test": "hardhat test",
+    "deploy:mumbai": "npx hardhat --network mumbai run ./scripts/deploy.ts"
   },
   "author": "",
   "license": "ISC",
