@@ -4,6 +4,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useBundlr } from '../../bundlr.context';
 import { useLit } from '../../lit.context';
+import { formatAmount } from '../../utils';
 import { UploadImage } from '../upload-image';
 
 function SimpleButton({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
@@ -26,8 +27,10 @@ export function WalletManagement() {
   if (isConnected && bundlrFunder !== undefined) {
     return (
       <>
-        <p className="mb-4 text-center"></p>Your current balance is:{' '}
-        {balance || 0} $BNDLR
+        <p className="mb-4 text-center">
+          Your current balance is:{' '}
+          {formatAmount(balance || 0, 4)} $BNDLR
+        </p>
         <div className="flex flex-col items-center justify-center">
           <SimpleButton onClick={() => fundWallet(+value)}>💸 Add Funds</SimpleButton>
           <UploadImage />

@@ -20,7 +20,7 @@ export function LitContextProvider({ children }: ILitContextProviderProps) {
   async function initialiseLit() {
     const client = new LitSdk.LitNodeClient();
     await client.connect();
-
+    
     setLitClient(client);
 
     const retrievedAuthSignature = await LitSdk.checkAndSignAuthMessage({
