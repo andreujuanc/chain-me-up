@@ -1,7 +1,7 @@
 import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
-import { useAccount } from 'wagmi';
+import { useAccount, useConnect } from 'wagmi';
 import { useFrenProfile } from '../../account.context';
 import { useBundlr } from '../../bundlr.context';
 import { useLit } from '../../lit.context';
@@ -26,6 +26,7 @@ function SimpleButton({
 }
 
 export function WalletManagement() {
+  const { connect, connectors, error, pendingConnector } = useConnect()
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
   const { initialiseLit } = useLit();
   const { account, isDeployed, createAccount } = useFrenProfile()
@@ -57,6 +58,17 @@ export function WalletManagement() {
   else if (isDeployed == false) {
     return (
       <>
+        <div>
+          {connectors.map((connector) => (
+            <SimpleButton
+              key={connector.id}
+              onClick={() => connect({ connector })}
+            >
+              {connector.name}
+
+            </SimpleButton>
+          ))}
+        </div>
         <p className="mb-4 text-center">Seems like this is your first time here, welcome!</p>
         <div>
           <SimpleButton onClick={() => createAccount()}>Create Account</SimpleButton>

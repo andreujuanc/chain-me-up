@@ -69,7 +69,7 @@ export function BundlrContextProvider({
   const [balance, setBalance] = useState<string>('');
   const { encryptString } = useLit();
   const { profile } = useFrenProfile()
-
+  console.log('profile', profile)
   useEffect(() => {
     if (bundlrInstance) {
       fetchBalance();
@@ -149,29 +149,29 @@ export function BundlrContextProvider({
 
   async function uploadFile(file: Buffer) {
     try {
-      if (encryptString && profile) {
-        let { encryptedData, encryptedSymmetricKey, accessControlConditions } =
-          await encryptString(file.toString('base64'), profile);
+      if (!encryptString) throw new Error('Could not upload - lit is not initialised.');
+      if (!profile) throw new Error('No profile found')
 
-        const packagedData = Buffer.from(
-          JSON.stringify({
-            encryptedData,
-            encryptedSymmetricKey,
-            accessControlConditions,
-          }),
-        );
+      let { encryptedData, encryptedSymmetricKey, accessControlConditions } =
+        await encryptString(file.toString('base64'), profile);
 
-        let transaction = await bundlrInstance!.uploader.upload(packagedData, [
-          {
-            name: 'Content-Type',
-            value: 'application/json',
-          },
-        ]);
+      const packagedData = Buffer.from(
+        JSON.stringify({
+          encryptedData,
+          encryptedSymmetricKey,
+          accessControlConditions,
+        }),
+      );
 
-        return transaction;
-      } else {
-        throw new Error('Could not upload - lit is not initialised.');
-      }
+      let transaction = await bundlrInstance!.uploader.upload(packagedData, [
+        {
+          name: 'Content-Type',
+          value: 'application/json',
+        },
+      ]);
+
+      return transaction;
+
     } catch (error) {
       log.error('Something went wrong: ', (error as Error)?.message);
     }

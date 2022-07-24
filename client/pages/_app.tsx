@@ -37,14 +37,16 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return (
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
-        <LitContextProvider>
-          <BundlrContextProvider>
-            <AccountContextProvider>
+        <AccountContextProvider>
+          <LitContextProvider>
+            <BundlrContextProvider>
+
               <Toaster position="top-right" reverseOrder={false} />
               {getLayout(<Component {...pageProps} />)}
-            </AccountContextProvider>
-          </BundlrContextProvider>
-        </LitContextProvider>
+
+            </BundlrContextProvider>
+          </LitContextProvider>
+        </AccountContextProvider>
       </RainbowKitProvider>
     </WagmiConfig>
   );
