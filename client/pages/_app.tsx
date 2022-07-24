@@ -10,6 +10,7 @@ import { AppPropsWithLayout } from '../components/layout';
 import { Toaster } from 'react-hot-toast';
 import { BundlrContextProvider } from '../bundlr.context';
 import { LitContextProvider } from '../lit.context';
+import { AccountContextProvider } from '../account.context';
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai],
@@ -38,8 +39,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <RainbowKitProvider chains={chains}>
         <LitContextProvider>
           <BundlrContextProvider>
-            <Toaster position="top-right" reverseOrder={false} />
-            {getLayout(<Component {...pageProps} />)}
+            <AccountContextProvider>
+              <Toaster position="top-right" reverseOrder={false} />
+              {getLayout(<Component {...pageProps} />)}
+            </AccountContextProvider>
           </BundlrContextProvider>
         </LitContextProvider>
       </RainbowKitProvider>

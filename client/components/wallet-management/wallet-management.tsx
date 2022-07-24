@@ -2,6 +2,7 @@ import { ConnectButton } from '@rainbow-me/rainbowkit';
 import { useRouter } from 'next/router';
 import { useEffect, useMemo, useState } from 'react';
 import { useAccount } from 'wagmi';
+import { useFrenProfile } from '../../account.context';
 import { useBundlr } from '../../bundlr.context';
 import { useLit } from '../../lit.context';
 import { formatAmount } from '../../utils';
@@ -27,7 +28,8 @@ function SimpleButton({
 export function WalletManagement() {
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
   const { initialiseLit } = useLit();
-  const { isConnected, address } = useAccount();
+  const { account, isDeployed } = useFrenProfile()
+  const { isConnected } = useAccount();
   const [value, setValue] = useState('0.05');
   const router = useRouter();
 
@@ -62,6 +64,15 @@ export function WalletManagement() {
           >
             Login
           </SimpleButton>
+        </div>
+      </>
+    );
+  } else if (isDeployed == false) {
+    return (
+      <>
+        <p className="mb-4 text-center">Seems like this is your first time here, welcome!</p>
+        <div>
+          <SimpleButton onClick={() => { }}>Login</SimpleButton>
         </div>
       </>
     );

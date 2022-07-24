@@ -27,4 +27,14 @@ contract ChainMeUpProfiles is Ownable, Pausable {
     function getProfile() external view returns (address) {
         return profiles[msg.sender];
     }
+
+    function hasAccessToProfile(address userAddress, address profile) external view returns (uint) {
+        return hasAccessToSingleAsset(userAddress, profile, 0);
+    }
+
+    function hasAccessToSingleAsset(address userAddress, address profile, uint assetId) public view returns (uint) {
+        require(profiles[profile] != address(0), "Profile does not exist");
+        ChainMeUp profile = ChainMeUp(profiles[profile]);
+        return profile.balanceOf(userAddress, assetId);
+    }
 }

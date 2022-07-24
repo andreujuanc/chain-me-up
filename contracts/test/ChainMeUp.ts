@@ -7,31 +7,45 @@ describe("ChainMeUp", function () {
   // We use loadFixture to run this setup once, snapshot that state,
   // and reset Hardhat Network to that snapshopt in every test.
   async function deployMain() {
-    const [owner, otherAccount] = await ethers.getSigners();
+    const [owner, userA, userB] = await ethers.getSigners();
 
-    const ChainMeUpDeployer = await ethers.getContractFactory("ChainMeUpProfiles");
-    const chainMeUpDeployer = await ChainMeUpDeployer.deploy();
+    const ChainMeUpProfiles = await ethers.getContractFactory("ChainMeUpProfiles");
+    const chainMeUpProfiles = await ChainMeUpProfiles.deploy();
 
-    return { deployer: chainMeUpDeployer, owner, otherAccount };
+    return { profiles: chainMeUpProfiles, owner, userA, userB };
   }
 
   describe("Deployment", function () {
-    it("Should deploy", async function () {
-      const { deployer, otherAccount } = await loadFixture(deployMain);
-      
-      await deployer.createProfile()
-      const deployedAddress = await deployer.getProfile()
+    it("Should deploy once", async function () {
+      const { profiles, userA } = await loadFixture(deployMain);
+
+      await profiles.createProfile()
+      const deployedAddress = await profiles.getProfile()
 
       expect(deployedAddress).to.be.properAddress;
       expect(deployedAddress).to.not.be.equal(ethers.constants.AddressZero);
 
-      await deployer.createProfile()
-      const secondTime = await deployer.getProfile()
+      await profiles.createProfile()
+      const secondTime = await profiles.getProfile()
       expect(secondTime).to.be.equal(deployedAddress)
 
-      await deployer.connect(otherAccount).createProfile()
-      const otherAccountProfile = await deployer.connect(otherAccount).getProfile()
+      await profiles.connect(userA).createProfile()
+      const otherAccountProfile = await profiles.connect(userA).getProfile()
       expect(otherAccountProfile).to.be.not.equal(deployedAddress)
     });
+
+
+    it("Should allow someone to mint a token to follow someone else", async function () {
+      const { profiles, userA, userB } = await loadFixture(deployMain);
+      
+      await profiles.connect(userA).createProfile()
+      const userA_tokenAddress = await profiles.connect(userA).getProfile()
+      const userAProfile = await ethers.getContractAt("ChainMeUp", userA_tokenAddress)
+
+
+      await userAProfile.connect(userB).mint([])
+      expect(await userAProfile.balanceOf(userB.address, 0)).to.be.equal(1)
+
+    })
   });
 });
