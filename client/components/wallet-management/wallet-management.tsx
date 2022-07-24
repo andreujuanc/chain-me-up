@@ -3,10 +3,12 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useAccount } from 'wagmi';
 import { useBundlr } from '../../bundlr.context';
+import { useLit } from '../../lit.context';
 import { UploadImage } from '../upload-image';
 
 export function WalletManagement() {
   const { initialiseBundlr, bundlrInstance, balance, fundWallet } = useBundlr();
+  const { initialiseLit } = useLit();
   const { isConnected } = useAccount();
   const [value, setValue] = useState('0.05');
   const router = useRouter();
@@ -17,6 +19,12 @@ export function WalletManagement() {
       initialiseBundlr();
     }
   }, [isConnected, bundlrInstance]);
+
+  useEffect(() => {
+    if (isConnected) {
+      initialiseLit();
+    }
+  }, [isConnected]);
 
   if (isConnected) {
     return (

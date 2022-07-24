@@ -9,6 +9,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import { AppPropsWithLayout } from '../components/layout';
 import { Toaster } from 'react-hot-toast';
 import { BundlrContextProvider } from '../bundlr.context';
+import { LitContextProvider } from '../lit.context';
 
 const { chains, provider } = configureChains(
   [chain.polygonMumbai],
@@ -36,8 +37,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
     <WagmiConfig client={wagmiClient}>
       <RainbowKitProvider chains={chains}>
         <BundlrContextProvider>
-          <Toaster position="top-right" reverseOrder={false} />
-          {getLayout(<Component {...pageProps} />)}
+          <LitContextProvider>
+            <Toaster position="top-right" reverseOrder={false} />
+            {getLayout(<Component {...pageProps} />)}
+          </LitContextProvider>
         </BundlrContextProvider>
       </RainbowKitProvider>
     </WagmiConfig>
